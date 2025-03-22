@@ -33,12 +33,17 @@ android {
     applicationVariants.all { variant ->
         variant.preBuildProvider.configure {
             doFirst {
-                def opusTar = file("${rootDir}/../../opus-1.3.1.tar")  // 修正层级
-                def outputDir = file("${rootDir}/../../opus-1.3.1")
-                if (!outputDir.exists()) {
-                    copy {
-                        from tarTree(opusTar)
-                        into outputDir.parent
+                def opusDir = file("${rootProject.rootDir}/opus-1.3.1")
+                // 如果目录不存在，尝试从tar解压
+                if (!opusDir.exists()) {
+                    def opusTar = file("${rootProject.rootDir}/opus-1.3.1.tar")
+                    if (opusTar.exists()) {
+                        copy {
+                            from tarTree(opusTar)
+                            into rootProject.rootDir  // 直接解压到项目根目录
+                        }
+                    } else {
+                        throw new GradleException("opus-1.3.1.tar not found at ${opusTar.path}")
                     }
                 }
             }
