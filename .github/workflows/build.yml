@@ -17,6 +17,7 @@ jobs:
       - name: Build APK
         run: |
           cd android_app
+          chmod +x gradlew
           ./gradlew assembleDebug
 
   windows-build:
