@@ -9,10 +9,11 @@ jobs:
       - uses: actions/checkout@v3
       - name: Prepare Opus Source
         run: |
-          mv opus-1.3.1.tar.gz android/opus-1.3.1.tar.gz  # 源码在仓库根目录
+          # 修正移动路径：根目录 → android_app目录
+          mv opus-1.3.1.tar.gz android_app/opus-1.3.1.tar.gz
       - name: Build APK
         run: |
-          cd android
+          cd android_app
           ./gradlew assembleDebug
 
   windows-build:
@@ -21,6 +22,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build Windows
         run: |
-          cd windows
+          # 修正目录名称：windows → windows_app
+          cd windows_app
           cmake -B build -DCMAKE_PREFIX_PATH="libraries"
           cmake --build build --config Release
