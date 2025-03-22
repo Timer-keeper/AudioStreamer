@@ -12,10 +12,12 @@ jobs:
           # 使用正确的解压命令
           mkdir -p android_app/opus-1.3.1
           tar -xf opus-1.3.1.tar -C android_app/opus-1.3.1 --strip-components=1
-      - name: Build APK
-        run: |
-          cd android_app
-          ./gradlew assembleDebug
+        - name: Set Gradle Permissions
+          run: cd android_app && chmod +x gradlew
+        - name: Build APK
+          run: |
+            cd android_app
+            ./gradlew assembleDebug
 
   windows-build:
     runs-on: windows-latest
