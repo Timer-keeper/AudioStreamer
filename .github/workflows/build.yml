@@ -1,0 +1,26 @@
+name: Build
+
+on: [push]
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare Opus Source
+        run: |
+          mv opus-1.3.1.tar.gz android/opus-1.3.1.tar.gz  # 源码在仓库根目录
+      - name: Build APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Windows
+        run: |
+          cd windows
+          cmake -B build -DCMAKE_PREFIX_PATH="libraries"
+          cmake --build build --config Release
